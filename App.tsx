@@ -2,7 +2,6 @@ import {View, Text, TouchableOpacity, SafeAreaView, StyleSheet} from 'react-nati
 import React from 'react';
 
 import { useDispatch, useSelector, UseSelector } from 'react-redux';
-import { decrement, increment } from './src/redux/counter/counterSlice';
 import Button from './src/components/atoms/Button';
 
 const App = () => {
@@ -51,33 +50,33 @@ const App = () => {
         </View>
         <View style={styles.bottomContainer}>
           <View style={styles.row}>
-            <Button title={'clean'}/>
-            <Button title={'pow'}/>
-            <Button title={'swap'}/>
-            <Button title={'/'}/>
+            <Button title={'clean'} onPress={() => {}}/>
+            <Button title={'pow'} onPress={() => {}}/>
+            <Button title={'swap'} onPress={() => {}}/>
+            <Button title={'/'} onPress={() => {}}/>
           </View>
           <View style={styles.row}>
-            <Button title={'9'}/>
-            <Button title={'8'}/>
-            <Button title={'7'}/>
-            <Button title={'x'}/>
+            <Button title={'9'} onPress={() => {}}/>
+            <Button title={'8'} onPress={() => {}}/>
+            <Button title={'7'} onPress={() => {}}/>
+            <Button title={'x'} onPress={() => {}}/>
           </View>
           <View style={styles.row}>
-            <Button title={'6'}/>
-            <Button title={'5'}/>
-            <Button title={'4'}/>
-            <Button title={'-'}/>
+            <Button title={'6'} onPress={() => {}}/>
+            <Button title={'5'} onPress={() => {}}/>
+            <Button title={'4'} onPress={() => {}}/>
+            <Button title={'-'} onPress={() => {}}/>
           </View>
           <View style={styles.row}>
-            <Button title={'3'}/>
-            <Button title={'2'}/>
-            <Button title={'1'}/>
-            <Button title={'+'}/>
+            <Button title={'3'} onPress={() => {}}/>
+            <Button title={'2'} onPress={() => {}}/>
+            <Button title={'1'} onPress={() => {}}/>
+            <Button title={'+'} onPress={() => {}}/>
           </View>
           <View style={styles.row}>
-            <Button title={'0'}/>
-            <Button title={'.'}/>
-            <Button title={'ENTER'}/>
+            <Button title={'0'} onPress={() => {}}/>
+            <Button title={'.'} onPress={() => {}}/>
+            <Button title={'ENTER'} onPress={() => {}}/>
           </View>
         </View>
     </SafeAreaView>

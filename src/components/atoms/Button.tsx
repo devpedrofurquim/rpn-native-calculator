@@ -2,7 +2,8 @@ import { TouchableOpacity , Text, StyleSheet } from 'react-native'
 import React from 'react'
 
 interface buttonProps {
-    title: string
+    title: string,
+    onPress: () => void
 }
 
 const styles = StyleSheet.create({
@@ -12,7 +13,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     title: {
-        fontSize: 15,
+        fontSize: 20,
         fontWeight: 'semibold',
         color: '#FAFAFA',
         backgroundColor: '#0A0A0A',
@@ -27,9 +28,9 @@ const styles = StyleSheet.create({
     }
 });
 
-const Button = ({title} : buttonProps) => {
+const Button = ({title, onPress} : buttonProps) => {
   return (
-    <TouchableOpacity activeOpacity={.7} style={styles.container}>
+    <TouchableOpacity activeOpacity={.7} style={styles.container} onPress={onPress}>
       <Text style={styles.title}>{title}</Text>
     </TouchableOpacity >
   )
