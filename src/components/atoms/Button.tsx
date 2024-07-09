@@ -3,8 +3,8 @@ import React from 'react'
 
 interface buttonProps {
     title: string,
-    onPress: () => void
-}
+    onPress: () => void;
+  }
 
 const styles = StyleSheet.create({
     container: {
