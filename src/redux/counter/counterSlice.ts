@@ -30,9 +30,13 @@ export const rpnSlice = createSlice({
     },
     clear: (state) => {
       state.stack.stack = [0];
+    },
+    enter: (state) => {
+      state.stack.stack = [state.stack.stack[0], ...state.stack.stack];
+      state.stack.inputState = 'replace';
     }
   },
 });
 
-export const { pressNum, clear } = rpnSlice.actions;
+export const { pressNum, clear, enter } = rpnSlice.actions;
 export default rpnSlice.reducer;
