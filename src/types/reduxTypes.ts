@@ -1,9 +1,7 @@
 export interface RpnState {
     stack: {
-      stack1: number[];
-      stack2: number[];
-      stack3: number[];
-      inputState: string;
+      stack: number[];
+      inputState: 'append' | 'replace' | 'push';
     };
   }
 
