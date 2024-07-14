@@ -3,6 +3,7 @@ export interface RpnState {
       stack1: number[];
       stack2: number[];
       stack3: number[];
+      inputState: string;
     };
   }
 
