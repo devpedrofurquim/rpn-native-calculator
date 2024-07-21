@@ -29,6 +29,8 @@ export const rpnSlice = createSlice({
           state.stack.inputState = 'append';
           break;
         case 'push':
+          state.stack.stack = [value.toString(), ...state.stack.stack];
+          state.stack.inputState = 'append';
           break;
         default:
           break;
@@ -40,8 +42,37 @@ export const rpnSlice = createSlice({
       }
       state.stack.inputState = 'append';
     },
-    pressOperation: (state) => {
-
+    pressOperation: (state, action: PayloadAction<{operation: string}>) => {
+      const currentNumber = parseFloat(state.stack.stack[0]);
+      const operandNumber = parseFloat(state.stack.stack[1]);
+      switch(action.payload.operation) {
+        case '/':
+          state.stack.stack[0] = (operandNumber / currentNumber).toString();
+          state.stack.inputState = 'push';
+          break;
+        case 'x':
+          state.stack.stack[0] = (operandNumber * currentNumber).toString();
+          state.stack.inputState = 'push';
+          break;
+        case '-':
+          state.stack.stack[0] = (operandNumber - currentNumber).toString();
+          state.stack.inputState = 'push';
+          break;
+        case '+':
+          state.stack.stack[0] = (operandNumber + currentNumber).toString();
+          state.stack.inputState = 'push';
+          break;
+        case 'pow':
+          state.stack.stack = [`${(operandNumber ** currentNumber)}`, ...state.stack.stack.slice(2)];
+          state.stack.inputState = 'push';
+          break;
+        case 'swap':
+          break;
+        default:
+          state.stack.stack[0] = '0';
+          break;
+      }
+      
     },
     clear: (state) => {
       state.stack.stack = ["0"];

@@ -20,8 +20,8 @@ const App = () => {
     dispatch(pressDot());
   };
 
-  const handleOperation = () => {
-    dispatch(pressOperation());
+  const handleOperation = (operation : string) => {
+    dispatch(pressOperation({operation}));
   }
 
   const handleClear = () => {
@@ -82,27 +82,27 @@ const App = () => {
       <View style={styles.bottomContainer}>
         <View style={styles.row}>
           <Button title={'C'} onPress={handleClear} />
-          <Button title={'pow'} onPress={() => {}} />
-          <Button title={'swap'} onPress={() => {}} />
-          <Button title={'/'} onPress={() => handleOperation()} special />
+          <Button title={'pow'} onPress={() => handleOperation('pow')} />
+          <Button title={'swap'} onPress={() => handleOperation('swap')} />
+          <Button title={'/'} onPress={() => handleOperation('/')} special />
         </View>
         <View style={styles.row}>
           <Button title={'7'} onPress={() => handlePressNum('stack', 7)} />
           <Button title={'8'} onPress={() => handlePressNum('stack', 8)} />
           <Button title={'9'} onPress={() => handlePressNum('stack', 9)} />
-          <Button title={'x'} onPress={() => handleOperation()} special />
+          <Button title={'x'} onPress={() => handleOperation('x')} special />
         </View>
         <View style={styles.row}>
           <Button title={'4'} onPress={() => handlePressNum('stack', 4)} />
           <Button title={'5'} onPress={() => handlePressNum('stack', 5)} />
           <Button title={'6'} onPress={() => handlePressNum('stack', 6)} />
-          <Button title={'-'} onPress={() => handleOperation()} special />
+          <Button title={'-'} onPress={() => handleOperation('-')} special />
         </View>
         <View style={styles.row}>
           <Button title={'1'} onPress={() => handlePressNum('stack', 1)} />
           <Button title={'2'} onPress={() => handlePressNum('stack', 2)} />
           <Button title={'3'} onPress={() => handlePressNum('stack', 3)} />
-          <Button title={'+'} onPress={() => handleOperation()} special />
+          <Button title={'+'} onPress={() => handleOperation('+')} special />
         </View>
         <View style={styles.row}>
           <Button title={'0'} onPress={() => handlePressNum('stack', 0)} />
