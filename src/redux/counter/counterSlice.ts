@@ -8,6 +8,13 @@ const initialState: RpnState = {
   }
 };
 
+const switchNegative = (x: string): string => {
+  if (x && x.startsWith('-')) {
+    return x.slice(1);
+  }
+  return `-${x}`;
+}
+
 export const rpnSlice = createSlice({
   name: 'rpn',
   initialState,
@@ -58,8 +65,12 @@ export const rpnSlice = createSlice({
           state.stack.inputState = 'push';
           break;
         case '-':
-          state.stack.stack[0] = (operandNumber - currentNumber).toString();
-          state.stack.inputState = 'push';
+          if (currentNumber) {
+            state.stack.stack[0] = (operandNumber - currentNumber).toString();
+            state.stack.inputState = 'push';
+          } else {
+            state.stack.stack = [switchNegative(state.stack.stack[0]), ...state.stack.stack.slice(1)];
+          }
           break;
         case '+':
           state.stack.stack[0] = (operandNumber + currentNumber).toString();
@@ -77,7 +88,6 @@ export const rpnSlice = createSlice({
           state.stack.stack[0] = '0';
           break;
       }
-      
     },
     pressClear: (state) => {
       state.stack.stack = ["0"];
@@ -91,8 +101,11 @@ export const rpnSlice = createSlice({
         state.stack.inputState = 'replace';
       }
     },
+    toggleNegative: (state) => {
+
+    },
   },
 });
 
-export const { pressNum, pressDot, pressOperation, pressClear, pressEnter } = rpnSlice.actions;
+export const { pressNum, pressDot, pressOperation, pressClear, pressEnter, toggleNegative } = rpnSlice.actions;
 export default rpnSlice.reducer;
