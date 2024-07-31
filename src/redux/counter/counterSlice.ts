@@ -70,6 +70,8 @@ export const rpnSlice = createSlice({
           state.stack.inputState = 'push';
           break;
         case 'swap':
+          state.stack.stack = [state.stack.stack[1], state.stack.stack[0], ...state.stack.stack.slice(2)];
+          state.stack.inputState = 'push';
           break;
         default:
           state.stack.stack[0] = '0';
@@ -77,10 +79,10 @@ export const rpnSlice = createSlice({
       }
       
     },
-    clear: (state) => {
+    pressClear: (state) => {
       state.stack.stack = ["0"];
     },
-    enter: (state) => {
+    pressEnter: (state) => {
       const currentNumber = state.stack.stack[0];
       if (currentNumber.endsWith('.')) {
         state.stack.stack[0] = 'NaN';
@@ -88,9 +90,9 @@ export const rpnSlice = createSlice({
         state.stack.stack = [currentNumber, ...state.stack.stack];
         state.stack.inputState = 'replace';
       }
-    }
+    },
   },
 });
 
-export const { pressNum, pressDot, pressOperation, clear, enter } = rpnSlice.actions;
+export const { pressNum, pressDot, pressOperation, pressClear, pressEnter } = rpnSlice.actions;
 export default rpnSlice.reducer;
