@@ -18,7 +18,7 @@ export const rpnSlice = createSlice({
 
       switch (state.stack.inputState) {
         case 'append':
-          if (currentNumber.includes('.')) {
+          if (currentNumber && currentNumber.includes('.')) {
             state.stack.stack[0] += value.toString();
           } else {
             state.stack.stack[0] = (parseFloat(currentNumber) * 10 + value).toString();
@@ -37,7 +37,10 @@ export const rpnSlice = createSlice({
       }
     },
     pressDot: (state) => {
-      if (!state.stack.stack[0].includes('.')) {
+      if (!state.stack.stack[0]) {
+        state.stack.stack[0] = 'NaN';
+      }
+      else if (state.stack.stack[0] && !state.stack.stack[0].includes('.')) {
         state.stack.stack[0] += '.';
       }
       state.stack.inputState = 'append';
