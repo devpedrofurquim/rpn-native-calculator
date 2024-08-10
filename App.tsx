@@ -1,5 +1,5 @@
-import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
-import React, { useState } from 'react';
+import { View, Text, SafeAreaView, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from './src/components/atoms/Button';
 import { RpnState } from './src/types/reduxTypes';
@@ -8,7 +8,16 @@ import { pressNum, pressClear, pressEnter, pressDot, pressOperation, toggleNegat
 const App = () => {
   const { stack, inputState } = useSelector((state: { rpn: RpnState }) => state.rpn.stack);
   const dispatch = useDispatch();
-  const [inputValue, setInputValue] = useState('');
+
+  const { width } = Dimensions.get('window');
+  
+  const scrollViewRef = useRef<ScrollView | null>(null);
+
+  const handleContentSizeChange = () => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollToEnd({ animated: true });
+    }
+  };
 
   const handleNum = (stack: 'stack', value: number) => {
     if (!isNaN(value)) {
@@ -37,10 +46,10 @@ const App = () => {
   };
 
   const baseNumber = {
-    fontSize: 40,
+    fontSize: width * 0.1,
     fontWeight: 'bold' as 'bold',
     textAlign: 'right' as 'right',
-    marginBottom: 20,
+    marginBottom: width * 0.02,
   };
 
   const styles = StyleSheet.create({
@@ -54,7 +63,6 @@ const App = () => {
       backgroundColor: '#FAFAFA',
     },
     bottomContainer: {
-      flex: 1,
       justifyContent: 'flex-end',
     },
     row: {
@@ -78,11 +86,14 @@ const App = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.topContainer}>
+      <ScrollView style={styles.topContainer}
+      ref={scrollViewRef}
+      onContentSizeChange={handleContentSizeChange}
+      >
         <Text style={styles.append}>{stack[2] || 0}</Text>
         <Text style={styles.append}>{stack[1] || 0}</Text>
         <Text style={styles[inputState]}>{stack[0] || 0}</Text>
-      </View>
+      </ScrollView>
       <View style={styles.bottomContainer}>
         <View style={styles.row}>
           <Button title={'C'} onPress={handleClear} />

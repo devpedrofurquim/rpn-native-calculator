@@ -1,5 +1,8 @@
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native';
 import React from 'react';
+
+const { width } = Dimensions.get('window'); // Get the screen width
+
 
 interface ButtonProps {
     title: string,
@@ -12,13 +15,13 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      width: 75,
-      height: 75,
-      borderRadius: 37.5,
-      margin: 10,
+      width: width * 0.17,  // 20% of screen width
+      height: width * 0.17, // 20% of screen width, making the button square
+      borderRadius: 10,
+      margin: width * 0.02, // 2% of screen width as margin
     },
     title: {
-        fontSize: 25,
+        fontSize: width * 0.06, // 6% of screen width
         fontWeight: '500',
         justifyContent: 'center',
         alignItems: 'center',
