@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from './src/components/atoms/Button';
 import { RpnState } from './src/types/reduxTypes';
-import { pressNum, pressClear, pressEnter, pressDot, pressOperation, toggleNegative } from './src/redux/counter/counterSlice';
+import { pressNum, pressClear, pressEnter, pressDot, pressOperation } from './src/redux/counter/counterSlice';
 
 const App = () => {
   const { stack, inputState } = useSelector((state: { rpn: RpnState }) => state.rpn.stack);
@@ -31,10 +31,6 @@ const App = () => {
 
   const handleOperation = (operation : string) => {
     dispatch(pressOperation({operation}));
-  }
-
-  const handleNegative = () => {
-    dispatch(toggleNegative());
   }
 
   const handleClear = () => {

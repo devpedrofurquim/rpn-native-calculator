@@ -5,6 +5,8 @@ const initialState: RpnState = {
   stack: {
     stack: [],
     inputState: 'replace',
+    nextNegative: false,
+    pressNegative: false,
   }
 };
 
@@ -23,12 +25,20 @@ export const rpnSlice = createSlice({
       const { value } = action.payload;
       const currentNumber = state.stack.stack[0];
 
+      if (state.stack.nextNegative) {
+        state.stack.nextNegative = false;
+        state.stack.stack[0] = `-${value}`;
+        state.stack.inputState = 'append';
+        return;
+      }
+
       switch (state.stack.inputState) {
         case 'append':
           if (currentNumber && currentNumber.includes('.')) {
             state.stack.stack[0] += value.toString();
-          } else {
-            state.stack.stack[0] = (parseFloat(currentNumber) * 10 + value).toString();
+          } 
+          else {
+            state.stack.stack[0] = `${currentNumber}${value}`;
           }
           break;
         case 'replace':
@@ -63,13 +73,18 @@ export const rpnSlice = createSlice({
         case 'x':
           state.stack.stack[0] = (operandNumber * currentNumber).toString();
           state.stack.inputState = 'push';
+
           break;
         case '-':
-          if (currentNumber) {
+          state.stack.pressNegative = true;
+          if (!operandNumber && !currentNumber) {
+            state.stack.nextNegative = true;
+          } else if (!operandNumber) {
+            state.stack.stack[0] = switchNegative(currentNumber.toString());
+            state.stack.nextNegative = false;
+          } else {
             state.stack.stack[0] = (operandNumber - currentNumber).toString();
             state.stack.inputState = 'push';
-          } else {
-            state.stack.stack = [switchNegative(state.stack.stack[0]), ...state.stack.stack.slice(1)];
           }
           break;
         case '+':
@@ -91,21 +106,20 @@ export const rpnSlice = createSlice({
     },
     pressClear: (state) => {
       state.stack.stack = ["0"];
+      state.stack.nextNegative = false;
     },
     pressEnter: (state) => {
       const currentNumber = state.stack.stack[0];
+      state.stack.nextNegative = true;
       if (currentNumber.endsWith('.')) {
         state.stack.stack[0] = 'NaN';
-      } else {
+      } else if (currentNumber) {
         state.stack.stack = [currentNumber, ...state.stack.stack];
         state.stack.inputState = 'replace';
       }
     },
-    toggleNegative: (state) => {
-
-    },
   },
 });
 
-export const { pressNum, pressDot, pressOperation, pressClear, pressEnter, toggleNegative } = rpnSlice.actions;
+export const { pressNum, pressDot, pressOperation, pressClear, pressEnter } = rpnSlice.actions;
 export default rpnSlice.reducer;
