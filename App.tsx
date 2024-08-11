@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from './src/components/atoms/Button';
 import { RpnState } from './src/types/reduxTypes';
-import { pressNum, pressClear, pressEnter, pressDot, pressOperation } from './src/redux/counter/counterSlice';
+import { pressNum, pressClear, pressEnter, pressDot, pressOperation, toogleNegative } from './src/redux/counter/counterSlice';
 
 const App = () => {
   const { stack, inputState } = useSelector((state: { rpn: RpnState }) => state.rpn.stack);
@@ -27,6 +27,10 @@ const App = () => {
 
   const handleDot = () => {
     dispatch(pressDot());
+  };
+
+  const handleNegative = () => {
+    dispatch(toogleNegative());
   };
 
   const handleOperation = (operation : string) => {
@@ -107,7 +111,7 @@ const App = () => {
           <Button title={'4'} onPress={() => handleNum('stack', 4)} />
           <Button title={'5'} onPress={() => handleNum('stack', 5)} />
           <Button title={'6'} onPress={() => handleNum('stack', 6)} />
-          <Button title={'-'} onPress={() => handleOperation('-')} special />
+          <Button title={'-'} onPress={() => handleNegative()} special />
         </View>
         <View style={styles.row}>
           <Button title={'1'} onPress={() => handleNum('stack', 1)} />

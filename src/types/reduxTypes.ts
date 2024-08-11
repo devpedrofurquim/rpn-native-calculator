@@ -3,7 +3,7 @@ export interface RpnState {
       stack: string[];
       inputState: 'append' | 'replace' | 'push';
       nextNegative: boolean;
-      pressNegative: boolean;
+      isToogleNegative: boolean;
     };
   }
 

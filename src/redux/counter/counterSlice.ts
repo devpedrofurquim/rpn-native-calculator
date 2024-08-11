@@ -6,7 +6,7 @@ const initialState: RpnState = {
     stack: [],
     inputState: 'replace',
     nextNegative: false,
-    pressNegative: false,
+    isToogleNegative: false,
   }
 };
 
@@ -25,8 +25,7 @@ export const rpnSlice = createSlice({
       const { value } = action.payload;
       const currentNumber = state.stack.stack[0];
 
-      if (state.stack.nextNegative) {
-        state.stack.nextNegative = false;
+      if (state.stack.nextNegative && state.stack.isToogleNegative) {
         state.stack.stack[0] = `-${value}`;
         state.stack.inputState = 'append';
         return;
@@ -75,18 +74,6 @@ export const rpnSlice = createSlice({
           state.stack.inputState = 'push';
 
           break;
-        case '-':
-          state.stack.pressNegative = true;
-          if (!operandNumber && !currentNumber) {
-            state.stack.nextNegative = true;
-          } else if (!operandNumber) {
-            state.stack.stack[0] = switchNegative(currentNumber.toString());
-            state.stack.nextNegative = false;
-          } else {
-            state.stack.stack[0] = (operandNumber - currentNumber).toString();
-            state.stack.inputState = 'push';
-          }
-          break;
         case '+':
           state.stack.stack[0] = (operandNumber + currentNumber).toString();
           state.stack.inputState = 'push';
@@ -110,16 +97,32 @@ export const rpnSlice = createSlice({
     },
     pressEnter: (state) => {
       const currentNumber = state.stack.stack[0];
-      state.stack.nextNegative = true;
-      if (currentNumber.endsWith('.')) {
+      if (state.stack.isToogleNegative) {
+        state.stack.nextNegative = true;
+      } else if (currentNumber.endsWith('.')) {
         state.stack.stack[0] = 'NaN';
       } else if (currentNumber) {
         state.stack.stack = [currentNumber, ...state.stack.stack];
         state.stack.inputState = 'replace';
       }
     },
+    toogleNegative: (state) => {
+      state.stack.isToogleNegative = true;
+      const currentNumber = parseFloat(state.stack.stack[0]);
+      const operandNumber = parseFloat(state.stack.stack[1]);
+
+      if (!operandNumber && !currentNumber) {
+        state.stack.nextNegative = true;
+      } else if (!operandNumber) {
+        state.stack.stack[0] = switchNegative(currentNumber.toString());
+        state.stack.nextNegative = false;
+      } else {
+        state.stack.stack[0] = (operandNumber - currentNumber).toString();
+        state.stack.inputState = 'push';
+      }
+    }
   },
 });
 
-export const { pressNum, pressDot, pressOperation, pressClear, pressEnter } = rpnSlice.actions;
+export const { pressNum, pressDot, pressOperation, pressClear, pressEnter, toogleNegative } = rpnSlice.actions;
 export default rpnSlice.reducer;
