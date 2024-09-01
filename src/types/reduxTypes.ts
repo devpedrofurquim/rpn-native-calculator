@@ -2,8 +2,6 @@ export interface RpnState {
     stack: {
       stack: string[];
       inputState: 'append' | 'replace' | 'push';
-      nextNegative: boolean;
-      isToogleNegative: boolean;
     };
   }
 

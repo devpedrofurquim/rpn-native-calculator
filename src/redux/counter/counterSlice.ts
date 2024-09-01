@@ -5,8 +5,6 @@ const initialState: RpnState = {
   stack: {
     stack: [],
     inputState: 'replace',
-    nextNegative: false,
-    isToogleNegative: false,
   }
 };
 
@@ -24,12 +22,6 @@ export const rpnSlice = createSlice({
     pressNum: (state, action: PayloadAction<{ stack: 'stack'; value: number }>) => {
       const { value } = action.payload;
       const currentNumber = state.stack.stack[0];
-
-      if (state.stack.nextNegative && state.stack.isToogleNegative) {
-        state.stack.stack[0] = `-${value}`;
-        state.stack.inputState = 'append';
-        return;
-      }
 
       switch (state.stack.inputState) {
         case 'append':
@@ -93,13 +85,10 @@ export const rpnSlice = createSlice({
     },
     pressClear: (state) => {
       state.stack.stack = ["0"];
-      state.stack.nextNegative = false;
     },
     pressEnter: (state) => {
       const currentNumber = state.stack.stack[0];
-      if (state.stack.isToogleNegative) {
-        state.stack.nextNegative = true;
-      } else if (currentNumber.endsWith('.')) {
+      if (currentNumber.endsWith('.')) {
         state.stack.stack[0] = 'NaN';
       } else if (currentNumber) {
         state.stack.stack = [currentNumber, ...state.stack.stack];
@@ -107,15 +96,13 @@ export const rpnSlice = createSlice({
       }
     },
     toogleNegative: (state) => {
-      state.stack.isToogleNegative = true;
       const currentNumber = parseFloat(state.stack.stack[0]);
       const operandNumber = parseFloat(state.stack.stack[1]);
 
       if (!operandNumber && !currentNumber) {
-        state.stack.nextNegative = true;
+        state.stack.stack[0] = 'NaN';
       } else if (!operandNumber) {
         state.stack.stack[0] = switchNegative(currentNumber.toString());
-        state.stack.nextNegative = false;
       } else {
         state.stack.stack[0] = (operandNumber - currentNumber).toString();
         state.stack.inputState = 'push';
