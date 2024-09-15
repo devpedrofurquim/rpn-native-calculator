@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { View, Text, SafeAreaView, StyleSheet, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from './src/components/atoms/Button';
@@ -29,8 +29,8 @@ const App = () => {
     dispatch(pressDot());
   };
 
-  const handleNegative = () => {
-    dispatch(toogleNegative());
+  const handleNegative = (operation: string) => {
+    dispatch(toogleNegative({operation}));
   };
 
   const handleOperation = (operation : string) => {
@@ -91,8 +91,12 @@ const App = () => {
       onContentSizeChange={handleContentSizeChange}
       >
         <Text style={styles.append}>{stack[2] || 0}</Text>
+        <TouchableOpacity onPress={() => handleNegative('2')}>
         <Text style={styles.append}>{stack[1] || 0}</Text>
-        <Text style={styles[inputState]}>{stack[0] || 0}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => handleNegative('1')}>
+          <Text style={styles[inputState]}>{stack[0] || 0}</Text>
+        </TouchableOpacity>
       </ScrollView>
       <View style={styles.bottomContainer}>
         <View style={styles.row}>
@@ -111,7 +115,7 @@ const App = () => {
           <Button title={'4'} onPress={() => handleNum('stack', 4)} />
           <Button title={'5'} onPress={() => handleNum('stack', 5)} />
           <Button title={'6'} onPress={() => handleNum('stack', 6)} />
-          <Button title={'-'} onPress={() => handleNegative()} special />
+          <Button title={'-'} onPress={() => handleOperation('-')} special />
         </View>
         <View style={styles.row}>
           <Button title={'1'} onPress={() => handleNum('stack', 1)} />

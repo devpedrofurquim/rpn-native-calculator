@@ -1,5 +1,6 @@
-import { TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native';
-import React from 'react';
+import { TouchableOpacity, Text, StyleSheet, Dimensions, Animated } from 'react-native';
+import React, { useRef, useState } from 'react';
+import * as Animatable from 'react-native-animatable';
 
 const { width } = Dimensions.get('window');
 
@@ -43,17 +44,21 @@ const styles = StyleSheet.create({
 });
 
 const Button = ({ title, onPress, special }: ButtonProps) => {
+    const handlePress = () => {
+        onPress()
+    }
+
     return (
         <TouchableOpacity
             activeOpacity={0.7}
-            style={[styles.container, special ? styles.specialContainer : styles.baseContainer]}
-            onPress={onPress}
+            style={[styles.container, special ? styles.specialContainer : styles.baseContainer,]}
+            onPress={handlePress}
         >
-            <Text style={[styles.title, special ? styles.specialTitle : styles.baseTitle]}>
+            <Text  style={[styles.title, special ? styles.specialTitle : styles.baseTitle]}>
                 {title}
             </Text>
         </TouchableOpacity>
     )
 }
 
-export default Button;
+export default Button
