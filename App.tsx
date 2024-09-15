@@ -1,27 +1,52 @@
-import { View, Text, SafeAreaView, StyleSheet, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import Button from './src/components/atoms/Button';
-import { RpnState } from './src/types/reduxTypes';
-import { pressNum, pressClear, pressEnter, pressDot, pressOperation, toogleNegative } from './src/redux/counter/counterSlice';
+import {RpnState} from './src/types/reduxTypes';
+import {
+  pressNum,
+  pressClear,
+  pressEnter,
+  pressDot,
+  pressOperation,
+  toogleNegative,
+} from './src/redux/counter/counterSlice';
+import SplashScreen from 'react-native-splash-screen';
 
 const App = () => {
-  const { stack, inputState } = useSelector((state: { rpn: RpnState }) => state.rpn.stack);
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      SplashScreen.hide();
+    }
+  }, []);
+
+  const {stack, inputState} = useSelector(
+    (state: {rpn: RpnState}) => state.rpn.stack,
+  );
   const dispatch = useDispatch();
 
-  const { width } = Dimensions.get('window');
-  
+  const {width} = Dimensions.get('window');
+
   const scrollViewRef = useRef<ScrollView | null>(null);
 
   const handleContentSizeChange = () => {
     if (scrollViewRef.current) {
-      scrollViewRef.current.scrollToEnd({ animated: true });
+      scrollViewRef.current.scrollToEnd({animated: true});
     }
   };
 
   const handleNum = (stack: 'stack', value: number) => {
     if (!isNaN(value)) {
-      dispatch(pressNum({ stack, value }));
+      dispatch(pressNum({stack, value}));
     }
   };
 
@@ -33,9 +58,9 @@ const App = () => {
     dispatch(toogleNegative({operation}));
   };
 
-  const handleOperation = (operation : string) => {
+  const handleOperation = (operation: string) => {
     dispatch(pressOperation({operation}));
-  }
+  };
 
   const handleClear = () => {
     dispatch(pressClear());
@@ -86,13 +111,13 @@ const App = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.topContainer}
-      ref={scrollViewRef}
-      onContentSizeChange={handleContentSizeChange}
-      >
+      <ScrollView
+        style={styles.topContainer}
+        ref={scrollViewRef}
+        onContentSizeChange={handleContentSizeChange}>
         <Text style={styles.append}>{stack[2] || 0}</Text>
         <TouchableOpacity onPress={() => handleNegative('2')}>
-        <Text style={styles.append}>{stack[1] || 0}</Text>
+          <Text style={styles.append}>{stack[1] || 0}</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleNegative('1')}>
           <Text style={styles[inputState]}>{stack[0] || 0}</Text>
